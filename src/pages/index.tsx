@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router';
-import { InferGetServerSidePropsType } from 'next';
+import { InferGetStaticPropsType } from 'next';
 import { useCallback } from 'react';
 
-interface Repo {
+export interface Repo {
   name: string;
 }
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const response = await fetch('https://api.github.com/users/LuizFerK/repos');
   const repos: Repo[] = await response.json();
 
@@ -18,11 +18,11 @@ export const getServerSideProps = async () => {
   }
 };
 
-const Main = ({ repoNames }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Main = ({ repoNames }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
   const handleClickRepo = useCallback((repoName: string) => {
-    router.push(`/detail?name=${repoName}`, `/detail/${repoName}`);
+    router.push(`/[repo]`, `/${repoName}`);
   }, []);
 
   return (
